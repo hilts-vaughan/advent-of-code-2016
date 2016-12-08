@@ -1,4 +1,5 @@
 from itertools import groupby
+import string
 
 f = open('input', 'r')
 
@@ -10,6 +11,13 @@ def sequence_to_histogram(seq):
     else:
       o[s] = 1
   return o
+
+def shifttext(text, shift):
+    a = ord('a')
+    return ''.join(
+        chr((ord(char) - a + shift) % 26 + a) if 'a' <= char <= 'z' else char
+        for char in text.lower())
+
 def get_next_biggest_from_histogram(histo):
   largest = 0
   keys = []
@@ -32,8 +40,11 @@ def is_valid_room(s):
     checksum =  s[start_square+1:len(s)-2]
     letters = s[0:last_hyphen].replace('-', '')
 
-    histo = sequence_to_histogram(letters)
+    result = shifttext(letters, sector_id)
+    print(result)
+    print(sector_id)
 
+    histo = sequence_to_histogram(letters)
     for l in checksum:
       next_char = get_next_biggest_from_histogram(histo)
       if l is not next_char:
